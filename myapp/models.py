@@ -21,3 +21,6 @@ class Data(models.Model):
     data = models.TextField()
     begin_heating = models.DateField()
     end_heating = models.DateField()
+
+    def __str__(self):
+        return f'данные проекта "{self.project}" пользователя "{self.project.user.username}"'
