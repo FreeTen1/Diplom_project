@@ -1,3 +1,6 @@
 from django.contrib import admin
 
-# Register your models here.
+from myapp.models import Project, Data
+
+admin.site.register(Project)
+admin.site.register(Data)
