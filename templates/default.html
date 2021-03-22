@@ -10,7 +10,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Django flatpages — {% block title %} {% endblock title %}</title>
+  <title>{% block title %} {% endblock title %}</title>
 
   <!-- Bootstrap core CSS -->
   <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet ">
@@ -28,7 +28,8 @@
     <div class="bg-light border-right" id="sidebar-wrapper" style="max-width: 240px;">
       <div class="sidebar-heading">Ваши проекты</div>
       <div class="list-group list-group-flush">
-        <a href="#" class="list-group-item list-group-item-action bg-light">my page1</a>
+          {% block url_projects %} {% endblock url_projects %}
+{#        <a href="#" class="list-group-item list-group-item-action bg-light">my page1</a>#}
       </div>
     </div>
     <!-- /#sidebar-wrapper -->
@@ -38,17 +39,32 @@
 
       <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
         <button class="btn btn-primary" id="menu-toggle">Toggle Menu</button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-            <li class="nav-item active">
-{#              {% if user.is_authenticated %}#}
-{#                <span>Привет: {{ user.username }}</span>#}
-{#                <a href="{% url 'account_logout' %}">Выход</a>#}
-{#              {% else %}#}
-{#                <a href="{% url 'account_login' %}">Вход</a>#}
-{#                <a href="{% url 'account_signup' %}">регистрация</a>#}
-{#              {% endif %}#}
-            </li>
+            {% if user.is_authenticated %}
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <span>Привет: {{ user.username }}</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                  <a class="dropdown-item" href="{% url 'account_change_password' %}">Изменить пароль</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="{% url 'account_logout' %}">Выход</a>
+                </div>
+              </li>
+            {% else %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'account_login' %}">Вход</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'account_signup' %}">регистрация</a>
+              </li>
+            {% endif %}
           </ul>
         </div>
       </nav>
