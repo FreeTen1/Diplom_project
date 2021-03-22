@@ -12,9 +12,9 @@ class Project(models.Model):
 
 
 class Data(models.Model):
-    year = 'Y'
+    month = 'M'
     FIELD = [
-        (year, 'ежегодные данные'),
+        (month, 'ежемесячные данные'),
     ]
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     project_type = models.CharField(max_length=1, choices=FIELD)
