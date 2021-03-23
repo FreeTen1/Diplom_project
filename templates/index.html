@@ -1,7 +1,18 @@
 {% extends 'default.html' %}
 
 {% block title %} Главная {% endblock title %}
+{% block url_projects %}
+    {% if user.is_authenticated %}
+        {% for project in a_projects %}
+            <a href="{{ project.id }}" class="list-group-item list-group-item-action bg-light">{{ project.project_name }} {{ project.id }}</a>
+        {% endfor %}
+    {% else %}
+        <div class="list-group list-group-flush">
+            <p class="list-group-item list-group-item-action bg-light">Войдите или зарегестрируйтесь</p>
+        </div>
+    {% endif %}
+{% endblock url_projects %}
 
 {% block content %}
-
+    {{ single_project.data }}
 {% endblock content%}
