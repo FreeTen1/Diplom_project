@@ -3,7 +3,7 @@
 {% block title %} создание проекта {% endblock title %}
 
 {% block content %}
-    <h3>Введите информацию</h3>
+    <h3>Введите название проекта</h3>
     <form method="POST">
         {% csrf_token %}
             <input type="text" name="project_name">

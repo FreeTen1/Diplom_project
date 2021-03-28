@@ -8,7 +8,7 @@ class Project(models.Model):
     project_date_creation = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.project_name} | {self.user}"
+        return f"{self.id} {self.project_name} | {self.user}"
 
 
 class Data(models.Model):
@@ -17,10 +17,10 @@ class Data(models.Model):
         (month, 'ежемесячные данные'),
     ]
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
-    project_type = models.CharField(max_length=1, choices=FIELD)
-    data = models.TextField()
-    begin_heating = models.DateField()
-    end_heating = models.DateField()
+    project_type = models.CharField(max_length=1, choices=FIELD, default='M')
+    data = models.TextField(default='0 0 0 0 0 0 0 0 0 0 0 0')
+    begin_heating = models.DateField(default=2020-10-22)
+    end_heating = models.DateField(default=2020-10-22)
 
     def __str__(self):
         return f'данные проекта "{self.project}" пользователя "{self.project.user.username}"'
