@@ -1,0 +1,12 @@
+{% extends 'default.html' %}
+
+{% block title %} создание проекта {% endblock title %}
+
+{% block content %}
+    <h3>Вы действительно хотите удалить данный проект?</h3>
+    {{ single_project }}
+    <form method="POST">
+        {% csrf_token %}
+            <input type="submit" value="DA">
+    </form>
+{% endblock content%}

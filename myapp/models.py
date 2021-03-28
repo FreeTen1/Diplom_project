@@ -19,8 +19,8 @@ class Data(models.Model):
     project = models.ForeignKey(Project, on_delete=models.CASCADE)
     project_type = models.CharField(max_length=1, choices=FIELD, default='M')
     data = models.TextField(default='0 0 0 0 0 0 0 0 0 0 0 0')
-    begin_heating = models.DateField(default=2020-10-22)
-    end_heating = models.DateField(default=2020-10-22)
+    begin_heating = models.DateField(default='2020-10-22')
+    end_heating = models.DateField(default='2020-10-22')
 
     def __str__(self):
-        return f'данные проекта "{self.project}" пользователя "{self.project.user.username}"'
+        return f'{self.id} данные проекта "{self.project}"'

@@ -3,5 +3,6 @@
 {% block title %} Главная {% endblock title %}
 
 {% block content %}
-    {{ single_project.data }}
+    {{ single_project.project.project_name }}<br>
+    {{ single_project.data }}<br>
 {% endblock content%}
