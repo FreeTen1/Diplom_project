@@ -8,7 +8,7 @@ class Project(models.Model):
     project_date_creation = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.project_name
+        return f"{self.project_name} | {self.user}"
 
 
 class Data(models.Model):
