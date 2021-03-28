@@ -14,5 +14,7 @@
 {% endblock url_projects %}
 
 {% block content %}
-    {{ single_project.data }}
+    {% if single_project %}
+        {{ single_project.data }}
+    {% endif %}
 {% endblock content%}

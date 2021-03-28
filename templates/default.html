@@ -29,6 +29,12 @@
       <div class="sidebar-heading">Ваши проекты:</div>
       <div class="list-group list-group-flush">
           {% block url_projects %} {% endblock url_projects %}
+          {% if user.is_authenticated %}
+              {% for project in a_projects %}
+                  <a href="{{ project.id }}" class="list-group-item list-group-item-action bg-light">{{ project.project_name }} {{ project.id }}</a>
+              {% endfor %}
+              <a href="create_project" class="list-group-item">Добавить проект</a>
+          {% endif %}
       </div>
     </div>
     <!-- /#sidebar-wrapper -->
@@ -67,7 +73,6 @@
           </ul>
         </div>
       </nav>
-
       <div class="container-fluid">
           {% block content %}
               {% include 'default.html' %}
