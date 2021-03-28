@@ -3,8 +3,8 @@
 {% block title %} создание проекта {% endblock title %}
 
 {% block content %}
-    <h3>Вы действительно хотите удалить данный проект?</h3>
-    {{ single_project }}
+    <h3>Вы действительно хотите удалить проект "{{ single_project.project_name }}"?</h3>
+
     <form method="POST">
         {% csrf_token %}
             <input type="submit" value="DA">
