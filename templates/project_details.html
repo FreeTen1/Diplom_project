@@ -8,14 +8,25 @@
     <form method="POST">
         {% csrf_token %}
         <div class="input-div">
+
             {% for month, number in output_data.items %}
                 <label><p class="input-label">{{ month }}:</p>
-                    <input class="data-input" type="number" value="{{ number }}" name="{{ month }}" placeholder="Данные за {{ month }}" min="0" step="0.01">
+                    <input required class="data-input" type="number" value="{{ number }}" name="{{ month }}" placeholder="Данные за {{ month }}" min="0" step="0.01">
                 </label>
             {% endfor %}
+
+            <label>Начало отопительного периода:
+                <input required type="date" name="begin_heating" value="{{ single_project.begin_heating|date:'Y-m-d' }}">
+            </label>
+
+            <label>Конец отопительного периода: &nbsp;
+                <input required type="date" name="end_heating" value="{{ single_project.end_heating|date:'Y-m-d' }}">
+            </label>
+
             <div class="div-data-submit">
                 <input class="btn btn-primary" style="" type="submit" value="Сохранить">
             </div>
+
         </div>
     </form>
 {% endblock content%}

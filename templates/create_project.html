@@ -7,11 +7,11 @@
     <form method="POST">
         {% csrf_token %}
         {% if project_name %}
-            <input type="text" name="project_name" value="{{ project_name }}">
-            <input type="submit" value="Редактировать проект">
+            <input required type="text" name="project_name" value="{{ project_name }}">
+            <input class="btn btn-primary" type="submit" value="Редактировать проект">
         {% else %}
-            <input type="text" name="project_name">
-            <input type="submit" value="Создать проект">
+            <input required type="text" name="project_name">
+            <input class="btn btn-primary" type="submit" value="Создать проект">
         {% endif %}
 
     </form>

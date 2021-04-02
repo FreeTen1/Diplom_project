@@ -31,8 +31,7 @@ class ProjectData(DetailView):
 
         context['a_project'] = Data.objects.filter(project__user__username=self.request.user)
 
-        get_id = self.kwargs.get('pk')
-        data = Data.objects.get(id=get_id)
+        data = Data.objects.get(id=self.kwargs.get('pk'))
 
         datas = list(map(float, data.data.split(' ')))
         months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
@@ -44,7 +43,12 @@ class ProjectData(DetailView):
     def post(self, request, *args, **kwargs):
         editable_data = Data.objects.get(id=self.kwargs.get('pk'))
         monthly_data = ' '.join([request.POST['Январь'], request.POST['Февраль'], request.POST['Март'], request.POST['Апрель'], request.POST['Май'], request.POST['Июнь'], request.POST['Июль'], request.POST['Август'], request.POST['Сентябрь'], request.POST['Октябрь'], request.POST['Ноябрь'], request.POST['Декабрь']])
+        begin_heating = request.POST.get('begin_heating', False)
+        end_heating = request.POST.get('end_heating', False)
         editable_data.data = monthly_data
+        editable_data.begin_heating = begin_heating
+        editable_data.end_heating = end_heating
+
         editable_data.save()
         return super().get(request, *args, **kwargs)
 
