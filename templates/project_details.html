@@ -1,0 +1,25 @@
+{% extends 'default.html' %}
+
+
+{% block title %} Проект {{ single_project.project.project_name }}{% endblock title %}
+
+{% block content %}
+    <h2>Проект {{ single_project.project.project_name }}</h2>
+    {{ single_project.data }}<br>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="input-div">
+            {% for month, number in output_data.items %}
+                <label><p class="input-label">{{ month }}:</p>
+                    <input class="data-input" type="number" value="{{ number }}" name="{{ month }}" placeholder="Данные за {{ month }}" min="0">
+                </label>
+            {% endfor %}
+            <div class="div-data-submit">
+                <input class="btn btn-primary" style="" type="submit" value="Сохранить">
+            </div>
+
+        </div>
+    </form>
+{% endblock content%}
+
+

@@ -23,12 +23,22 @@ class IndexView(ListView):
 @method_decorator(login_required, name='dispatch')
 class ProjectData(DetailView):
     model = Data
-    template_name = 'index.html'
+    template_name = 'project_details.html'
     context_object_name = 'single_project'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+
         context['a_project'] = Data.objects.filter(project__user__username=self.request.user)
+
+        id = self.kwargs.get('pk')  # узнать id
+        data = Data.objects.get(id=id)
+
+        datas = list(map(float, data.data.split(' ')))
+        months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
+        context['output_data'] = {}
+        for number, month in zip(datas, months):
+            context['output_data'][month] = number
         return context
 
 
