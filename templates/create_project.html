@@ -6,7 +6,13 @@
     <h3>Введите название проекта</h3>
     <form method="POST">
         {% csrf_token %}
+        {% if project_name %}
+            <input type="text" name="project_name" value="{{ project_name }}">
+            <input type="submit" value="Редактировать проект">
+        {% else %}
             <input type="text" name="project_name">
             <input type="submit" value="Создать проект">
+        {% endif %}
+
     </form>
 {% endblock content%}

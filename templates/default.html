@@ -38,6 +38,13 @@
             {#background-color: red;#}
             justify-content: center;
         }
+        .div-del-ed {
+            display: flex;
+            justify-content: space-between;
+            {#background-color: aqua;#}
+            width: 88%;
+            margin-left: 7%;
+        }
     </style>
 </head>
 
@@ -51,8 +58,11 @@
       <div class="list-group list-group-flush">
           {% if user.is_authenticated %}
               {% for project in a_project %}
-                  <a href="/projects/{{ project.id }}" class="list-group-item list-group-item-action bg-light" style="border-width: 1px 0 0;">{{ project.id }} {{ project.project.project_name }} {{ project.project.id }}</a>
-                  <a class="list-group-item" style="margin-left: 0%; font-size: 14px" href="delete/{{ project.project.id }}">Удалить проект!</a>
+                  <a href="/projects/{{ project.id }}" class="list-group-item list-group-item-action bg-light" style="border-width: 1px 0 0;">{{ project.project.project_name }}</a>
+                  <div class="div-del-ed">
+                    <a class="" style="margin-left: 0; font-size: 14px" href="/delete/{{ project.project.id }}">Удалить</a>
+                    <a class="" style="margin-left: 0; font-size: 14px" href="/create_project/{{ project.project.id }}">Редактировать имя</a>
+                  </div>
               {% endfor %}
               <a href="/create_project" class="list-group-item list-group-item-action bg-light" style="margin-top: 30px;">Добавить проект</a>
           {% else %}

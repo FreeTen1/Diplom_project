@@ -5,7 +5,6 @@
 
 {% block content %}
     <h2>Проект {{ single_project.project.project_name }}</h2>
-    {{ single_project.data }}<br>
     <form method="POST">
         {% csrf_token %}
         <div class="input-div">

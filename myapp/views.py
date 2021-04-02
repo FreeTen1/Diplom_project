@@ -71,6 +71,25 @@ class ProjectCreate(CreateView):
 
 
 @method_decorator(login_required, name='dispatch')
+class ProjectUpdate(ListView):
+    model = Data
+    template_name = 'create_project.html'
+    form_class = CreateProjectForm
+
+    def post(self, request, *args, **kwargs):
+        project = Project.objects.get(id=self.kwargs.get('pk'))
+        project.project_name = request.POST['project_name']
+        project.save()
+        return super().get(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['a_project'] = Data.objects.filter(project__user__username=self.request.user)
+        context['project_name'] = Data.objects.get(project__id=self.kwargs.get('pk')).project.project_name
+        return context
+
+
+@method_decorator(login_required, name='dispatch')
 class ProjectDelete(DeleteView):
     model = Project
     template_name = 'delete_project.html'
