@@ -18,6 +18,9 @@
     <link href="{% static 'css/simple-sidebar.css' %}" rel="stylesheet">
 
     <link href="{% static 'my_style.css' %}" rel="stylesheet">
+
+    <link href="{% static 'style_for_graph' %}" rel="stylesheet">
+
 </head>
 
 <body>
@@ -80,9 +83,9 @@
         </div>
       </nav>
       <div class="container-fluid">
-          {% block content %}
-              {% include 'default.html' %}
-          {% endblock content %}
+        {% block content %}
+          {% include 'default.html' %}
+        {% endblock content %}
       </div>
     </div>
     <!-- /#page-content-wrapper -->
@@ -93,7 +96,6 @@
   <!-- Bootstrap core JavaScript -->
   <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
   <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-
   <!-- Menu Toggle Script -->
   <script>
     $("#menu-toggle").click(function(e) {

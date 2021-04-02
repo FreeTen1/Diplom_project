@@ -31,13 +31,17 @@ class ProjectData(DetailView):
 
         context['a_project'] = Data.objects.filter(project__user__username=self.request.user)
 
+
         data = Data.objects.get(id=self.kwargs.get('pk'))
 
-        datas = list(map(float, data.data.split(' ')))
+        list_data = list(map(float, data.data.split(' ')))
+        context['list_data'] = list_data
         months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
         context['output_data'] = {}
-        for number, month in zip(datas, months):
+        for number, month in zip(list_data, months):
             context['output_data'][month] = number
+
+
         return context
 
     def post(self, request, *args, **kwargs):
