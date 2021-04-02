@@ -1,0 +1,46 @@
+.main-div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    /*#background-color: aqua;*/
+}
+.div-btn-interpol {
+    margin-top: 5px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+.input-div {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    /*#background-color: red;*/
+    max-width: 403px;
+}
+.input-label {
+    text-align: center;
+    margin: 0;
+}
+.data-input {
+    width: 85px;
+    text-align: center;
+}
+.div-data-submit {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    /*#background-color: red;*/
+}
+.div-del-ed {
+    display: flex;
+    justify-content: space-between;
+    /*#background-color: aqua;*/
+    width: 88%;
+    margin-left: 9%;
+}
+.div-date {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    /*#background-color: red;*/
+}

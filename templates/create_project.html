@@ -8,7 +8,7 @@
         {% csrf_token %}
         {% if project_name %}
             <input required type="text" name="project_name" value="{{ project_name }}">
-            <input class="btn btn-primary" type="submit" value="Редактировать проект">
+            <input class="btn btn-primary" type="submit" value="Изменить имя">
         {% else %}
             <input required type="text" name="project_name">
             <input class="btn btn-primary" type="submit" value="Создать проект">
