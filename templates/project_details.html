@@ -11,13 +11,12 @@
         <div class="input-div">
             {% for month, number in output_data.items %}
                 <label><p class="input-label">{{ month }}:</p>
-                    <input class="data-input" type="number" value="{{ number }}" name="{{ month }}" placeholder="Данные за {{ month }}" min="0">
+                    <input class="data-input" type="number" value="{{ number }}" name="{{ month }}" placeholder="Данные за {{ month }}" min="0" step="0.01">
                 </label>
             {% endfor %}
             <div class="div-data-submit">
                 <input class="btn btn-primary" style="" type="submit" value="Сохранить">
             </div>
-
         </div>
     </form>
 {% endblock content%}
