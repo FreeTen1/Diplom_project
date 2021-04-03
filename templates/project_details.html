@@ -33,7 +33,6 @@
                 <div class="div-btn-interpol">
                     <input class="btn btn-primary btn-block" type="button" id="btn1" value="График сухих данных">
                     <input class="btn btn-primary btn-block" type="button" id="btn2" value="Линейная интерполяция">
-                    <input class="btn btn-primary btn-block" type="button" id="btn3" value="Квадратичная интерполяция">
                 </div>
 
             </div>
@@ -52,10 +51,8 @@
     <script>
         btn1 = document.getElementById('btn1')
         btn2 = document.getElementById('btn2')
-        btn3 = document.getElementById('btn3')
 
-        var data = {{ list_data }}
-        console.log(data)
+        let data = {{ list_data }}
         btn1.addEventListener('click', () => {
             Highcharts.chart('graph', {
 

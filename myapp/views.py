@@ -31,7 +31,6 @@ class ProjectData(DetailView):
 
         context['a_project'] = Data.objects.filter(project__user__username=self.request.user)
 
-
         data = Data.objects.get(id=self.kwargs.get('pk'))
 
         list_data = list(map(float, data.data.split(' ')))
@@ -40,7 +39,6 @@ class ProjectData(DetailView):
         context['output_data'] = {}
         for number, month in zip(list_data, months):
             context['output_data'][month] = number
-
 
         return context
 
