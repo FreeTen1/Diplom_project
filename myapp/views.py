@@ -34,11 +34,14 @@ class ProjectData(DetailView):
         data = Data.objects.get(id=self.kwargs.get('pk'))
 
         list_data = list(map(float, data.data.split(' ')))
-        context['list_data'] = list_data
+        context['list_data'] = list_data # сухие данные
         months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
         context['output_data'] = {}
         for number, month in zip(list_data, months):
             context['output_data'][month] = number
+
+
+
 
         return context
 

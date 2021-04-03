@@ -18,7 +18,7 @@
     max-width: 403px;
 }
 .input-label {
-    text-align: center;
+    padding-left: 15px;
     margin: 0;
 }
 .data-input {

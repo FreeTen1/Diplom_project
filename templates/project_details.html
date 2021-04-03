@@ -12,7 +12,7 @@
 
                 {% for month, number in output_data.items %}
                     <label><p class="input-label">{{ month }}:</p>
-                        <input required class="data-input" type="number" value="{{ number }}" name="{{ month }}" placeholder="Данные за {{ month }}" min="0" step="0.01">
+                        <input required class="data-input" type="number" value="{{ number }}" name="{{ month }}" placeholder="Данные за {{ month }}" min="0" step="0.01"> КВт
                     </label>
                 {% endfor %}
 
@@ -24,6 +24,7 @@
                     <label>Конец отопительного периода: &nbsp;
                         <input required type="date" name="end_heating" value="{{ single_project.end_heating|date:'Y-m-d' }}">
                     </label>
+                    <input required class="data-input" type="number" value="" name="" placeholder="" min="1" step="0.01">
                 </div>
 
                 <div class="div-data-submit">
@@ -32,7 +33,7 @@
 
                 <div class="div-btn-interpol">
                     <input class="btn btn-primary btn-block" type="button" id="btn1" value="График сухих данных">
-                    <input class="btn btn-primary btn-block" type="button" id="btn2" value="Линейная интерполяция">
+                    <input class="btn btn-primary btn-block" type="button" id="btn2" value="Среднемесячные значения">
                 </div>
 
             </div>
@@ -49,10 +50,72 @@
     <script src="https://code.highcharts.com/modules/accessibility.js"></script>
 
     <script>
-        btn1 = document.getElementById('btn1')
-        btn2 = document.getElementById('btn2')
+        btn1 = document.getElementById('btn1');
+        btn2 = document.getElementById('btn2');
 
-        let data = {{ list_data }}
+        let data = {{ list_data }};
+        let average_values = [
+            {
+            name: 'Январь',
+            y: data[0] / 31,
+            color: 'red'
+            },
+            {
+            name: 'Февраль',
+            y: data[1] / 28,
+            color: 'red'
+            },
+            {
+            name: 'Март',
+            y: data[2] / 31,
+            color: 'red'
+            },
+            {
+            name: 'Апрель',
+            y: data[3] / 30,
+            color: 'red'
+            },
+            {
+            name: 'Май',
+            y: data[4] / 31,
+            color: 'blue'
+            },
+            {
+            name: 'Июнь',
+            y: data[5] / 30,
+            color: 'blue'
+            },
+            {
+            name: 'Июль',
+            y: data[6] / 31,
+            color: 'blue'
+            },
+            {
+            name: 'Август',
+            y: data[7] / 31,
+            color: 'blue'
+            },
+            {
+            name: 'Сентябрь',
+            y: data[8] / 30,
+            color: 'blue'
+            },
+            {
+            name: 'Октябрь',
+            y: data[9] / 31,
+            color: 'blue'
+            },
+            {
+            name: 'Ноябрь',
+            y: data[10] / 30,
+            color: 'red'
+            },
+            {
+            name: 'Декабрь',
+            y: data[11] / 31,
+            color: 'red'
+            }
+        ];
         btn1.addEventListener('click', () => {
             Highcharts.chart('graph', {
 
@@ -62,7 +125,7 @@
 
                 yAxis: {
                     title: {
-                        text: 'Потребление, Вт'
+                        text: 'Потребление, КВт'
                     }
                 },
 
@@ -90,7 +153,8 @@
                 series: [{
                     name: 'Сухие данные',
                     data: data
-                }],
+                    }
+                ],
 
                 responsive: {
                     rules: [{
@@ -108,64 +172,60 @@
                 }
 
             });
-        })
+        });
 
-        btn1.addEventListener('click', () => {
+        btn2.addEventListener('click', () => {
+
             Highcharts.chart('graph', {
-
+                chart: {
+                    type: 'column'
+                },
                 title: {
-                    text: 'График сухих данных'
+                    text: 'Среднемесячные значения'
                 },
-
-                yAxis: {
-                    title: {
-                        text: 'Потребление, Вт'
-                    }
+                subtitle: {
+                    text: ''
                 },
-
                 xAxis: {
-                    accessibility: {
-                        rangeDescription: 'Range: 01 to 12'
-                    }
-                },
-
-                legend: {
-                    layout: 'vertical',
-                    align: 'right',
-                    verticalAlign: 'middle'
-                },
-
-                plotOptions: {
-                    series: {
-                        label: {
-                            connectorAllowed: false
-                        },
-                        pointStart: 1
-                    }
-                },
-
-                series: [{
-                    name: 'Сухие данные',
-                    data: data
-                }],
-
-                responsive: {
-                    rules: [{
-                        condition: {
-                            maxWidth: 500
-                        },
-                        chartOptions: {
-                            legend: {
-                                layout: 'horizontal',
-                                align: 'center',
-                                verticalAlign: 'bottom'
-                            }
+                    type: 'category',
+                    labels: {
+                        rotation: -45,
+                        style: {
+                            fontSize: '13px',
+                            fontFamily: 'Verdana, sans-serif'
                         }
-                    }]
-                }
-
+                    }
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'Потребление КВт'
+                    }
+                },
+                legend: {
+                    enabled: false
+                },
+                tooltip: {
+                    pointFormat: '<b>{point.y:.3f} КВт</b>'
+                },
+                series: [{
+                    name: 'Месяц',
+                    data: average_values,
+                    dataLabels: {
+                        enabled: true,
+                        rotation: -90,
+                        color: '#FFFFFF',
+                        align: 'right',
+                        format: '{point.y:.3f}', // one decimal
+                        y: 10, // 10 pixels down from the top
+                        style: {
+                            fontSize: '13px',
+                            fontFamily: 'Verdana, sans-serif'
+                        }
+                    }
+                }]
             });
-        })
+        });
     </script>
 
 {% endblock content%}
