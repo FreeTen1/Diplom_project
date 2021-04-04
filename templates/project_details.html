@@ -4,7 +4,7 @@
 {% block title %} Проект {{ single_project.project.project_name }}{% endblock title %}
 
 {% block content %}
-    <h2>Проект {{ single_project.project.project_name }}</h2>
+    <h2>Проект {{ single_project.project.project_name }} {{ single_project.end_heating|date:'Y' }}</h2>
     <div class="main-div">
         <form method="POST">
             {% csrf_token %}
@@ -24,7 +24,9 @@
                     <label>Конец отопительного периода: &nbsp;
                         <input required type="date" name="end_heating" value="{{ single_project.end_heating|date:'Y-m-d' }}">
                     </label>
-                    <input required class="data-input" type="number" value="" name="" placeholder="" min="1" step="0.01">
+                    <label>Коэффициент экстрополяции: &nbsp; &nbsp;
+                        <input required class="data-input" type="number" value="{{ coef }}" name="coef" placeholder="" min="1" step="0.001">
+                    </label>
                 </div>
 
                 <div class="div-data-submit">
@@ -34,13 +36,15 @@
                 <div class="div-btn-interpol">
                     <input class="btn btn-primary btn-block" type="button" id="btn1" value="График сухих данных">
                     <input class="btn btn-primary btn-block" type="button" id="btn2" value="Среднемесячные значения">
+                    <input class="btn btn-primary btn-block" type="button" id="btn3" value="экстраполяция">
                 </div>
 
             </div>
         </form>
 
-        <div class="div-graph" id="graph"></div> {# тут график #}
-
+        <div class="div-graph" id="graph">{# тут график #}
+            <div id="graph1"></div><div id="graph2"></div>
+        </div>
     </div>
 
     <script src="https://code.highcharts.com/highcharts.js"></script>
@@ -52,6 +56,7 @@
     <script>
         btn1 = document.getElementById('btn1');
         btn2 = document.getElementById('btn2');
+        btn3 = document.getElementById('btn3');
 
         let data = {{ list_data }};
         let average_values = [
@@ -117,6 +122,9 @@
             }
         ];
         btn1.addEventListener('click', () => {
+            document.getElementById('graph').innerHTML = '<div style="width: 48%" id="graph1"></div><div style="width: 48%" id="graph2"></div>'
+            document.getElementById('graph1').innerHTML = ''
+            document.getElementById('graph2').innerHTML = ''
             Highcharts.chart('graph', {
 
                 title: {
@@ -130,9 +138,8 @@
                 },
 
                 xAxis: {
-                    accessibility: {
-                        rangeDescription: 'Range: 01 to 12'
-                    }
+                    name: 'Год',
+                    categories: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
                 },
 
                 legend: {
@@ -146,7 +153,7 @@
                         label: {
                             connectorAllowed: false
                         },
-                        pointStart: 1
+                        pointStart: 0
                     }
                 },
 
@@ -175,7 +182,9 @@
         });
 
         btn2.addEventListener('click', () => {
-
+            document.getElementById('graph').innerHTML = '<div style="width: 48%" id="graph1"></div><div style="width: 48%" id="graph2"></div>'
+            document.getElementById('graph1').innerHTML = ''
+            document.getElementById('graph2').innerHTML = ''
             Highcharts.chart('graph', {
                 chart: {
                     type: 'column'
@@ -226,6 +235,161 @@
                 }]
             });
         });
+
+        btn3.addEventListener('click', () => {
+            document.getElementById('graph').innerHTML = '<div style="width: 100%; height: 50%" id="graph1"></div><div style="width: 100%; height: 50%" id="graph2"></div>'
+            document.getElementById('graph1').innerHTML = ''
+            document.getElementById('graph2').innerHTML = ''
+            let n = prompt('На сколько лет вперёд вы хотите экстрополировать данные?')
+            if (n.replace (/\d/g, '').length) {
+                alert('Данные введены некоректно')
+            }
+            else {
+                let coef = {{ coef }};
+                let begin_year = Number({{ single_project.end_heating|date:'Y' }});
+                let list_years = []; //Список нужных лет
+                for (let i = 0; i <= n; i++) {
+                    list_years.push(begin_year + i)
+                }
+
+                let sum = 0; // сумма текщего года
+                for (let i = 0; i < 12; i++){
+                    sum += data[i]
+                }
+
+                let list_every_yaer = []; //список среднего потребления за следующие года
+                list_every_yaer.push(sum);
+                k = sum * coef;
+                for (let i = 0; i < list_years.length - 1; i++) {
+                    list_every_yaer.push(Math.round(k))
+                    k *= coef
+                }
+
+                let year_average_value = sum / 12;
+                let list_average_every_yaer = []; //список среднеМЕСЯЧНОГО потребления за следующие года
+                list_average_every_yaer.push(year_average_value);
+                k = year_average_value * coef;
+                for (let i = 0; i < list_years.length - 1; i++) {
+                    list_average_every_yaer.push(k)
+                    k *= coef
+                }
+
+                // график за потребления за год
+                Highcharts.chart('graph1', {
+
+                    title: {
+                        text: `Экстраполяция данных на ${n} лет`
+                    },
+
+                    yAxis: {
+                        title: {
+                            text: 'Потребление, КВт'
+                        }
+                    },
+
+                    xAxis: {
+                            name: 'Год',
+                            categories: list_years
+                    },
+
+                    legend: {
+                        layout: 'vertical',
+                        align: 'right',
+                        verticalAlign: 'middle'
+                    },
+
+                    plotOptions: {
+                        series: {
+                            label: {
+                                connectorAllowed: false
+                            },
+                            pointStart: 0
+                        }
+                    },
+
+                    series: [
+                        {
+                        name: 'Ежегодное потребление',
+                        data: list_every_yaer
+                        }
+                    ],
+
+                    responsive: {
+                        rules: [{
+                            condition: {
+                                maxWidth: 500
+                            },
+                            chartOptions: {
+                                legend: {
+                                    layout: 'horizontal',
+                                    align: 'center',
+                                    verticalAlign: 'bottom'
+                                }
+                            }
+                        }]
+                    }
+
+                });
+
+                // график среднемесячного потребления за год
+                Highcharts.chart('graph2', {
+
+                    title: {
+                        text: `Экстраполяция данных среднемесяного потребления на ${n} лет`
+                    },
+
+                    yAxis: {
+                        title: {
+                            text: 'Потребление, КВт'
+                        }
+                    },
+
+                    xAxis: {
+                            name: 'Год',
+                            categories: list_years
+                        },
+
+                    legend: {
+                        layout: 'vertical',
+                        align: 'right',
+                        verticalAlign: 'middle'
+                    },
+
+                    plotOptions: {
+                        series: {
+                            label: {
+                                connectorAllowed: false
+                            },
+                            pointStart: 0
+                        }
+                    },
+
+                    series: [
+                        {
+                        name: 'среднемесяное потребление',
+                        data: list_average_every_yaer
+                        }
+                    ],
+
+                    responsive: {
+                        rules: [{
+                            condition: {
+                                maxWidth: 500
+                            },
+                            chartOptions: {
+                                legend: {
+                                    layout: 'horizontal',
+                                    align: 'center',
+                                    verticalAlign: 'bottom'
+                                }
+                            }
+                        }]
+                    }
+
+                });
+
+            }
+        })
     </script>
 
 {% endblock content%}

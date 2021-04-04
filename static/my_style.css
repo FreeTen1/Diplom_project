@@ -46,6 +46,7 @@
 }
 .div-graph {
     width: 60%;
+    max-width: 60%;
     /*background-color: aqua;*/
 }
 
@@ -56,6 +57,6 @@
 
     .div-graph {
         width: 100%;
-        background-color: aqua;
+        /*background-color: aqua;*/
     }
 }
