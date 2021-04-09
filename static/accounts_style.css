@@ -1,0 +1,19 @@
+.accounts-div {
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    /*background-color: aqua;*/
+}
+
+.content-div {
+    padding: 10px;
+    margin: 10px;
+    height: 500px;
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: ghostwhite;
+    border: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}

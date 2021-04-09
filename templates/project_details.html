@@ -4,7 +4,7 @@
 {% block title %} Проект {{ single_project.project.project_name }}{% endblock title %}
 
 {% block content %}
-    <h2>Проект {{ single_project.project.project_name }} {{ single_project.end_heating|date:'Y' }}</h2>
+    <h2>Проект "{{ single_project.project.project_name }}"</h2>
     <div class="main-div">
         <form method="POST">
             {% csrf_token %}

@@ -29,7 +29,7 @@
 
   <!-- Custom styles for this template -->
   <link href="{% static 'css/simple-sidebar.css' %}" rel="stylesheet">
-
+  <link href="{% static 'accounts_style.css' %}" rel="stylesheet">
 </head>
 
 <body>
@@ -46,36 +46,17 @@
       </nav>
 
       <div class="container-fluid">
-        {% block body %}
-
-        {% if messages %}
-        <div>
-          <strong>Messages:</strong>
-          <ul>
-            {% for message in messages %}
-            <li>{{message}}</li>
-            {% endfor %}
-          </ul>
+        <div class="accounts-div">
+          <div class="content-div">
+            {% block body %}
+              {% block content %}
+              {% endblock %}
+            {% endblock %}
+            {% block extra_body %}
+            {% endblock %}
+          </div>
         </div>
-        {% endif %}
 
-        <div>
-          <strong>Menu:</strong>
-          <ul>
-            {% if user.is_authenticated %}
-            <li><a href="{% url 'account_email' %}">Change E-mail</a></li>
-            <li><a href="{% url 'account_logout' %}">Sign Out</a></li>
-            {% else %}
-            <li><a href="{% url 'account_login' %}">Sign In</a></li>
-            <li><a href="{% url 'account_signup' %}">Sign Up</a></li>
-            {% endif %}
-          </ul>
-        </div>
-        {% block content %}
-        {% endblock %}
-        {% endblock %}
-        {% block extra_body %}
-        {% endblock %}
       </div>
     </div>
     <!-- /#page-content-wrapper -->
