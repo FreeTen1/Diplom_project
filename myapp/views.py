@@ -2,9 +2,6 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, DetailView, CreateView, DeleteView
 
-from django.shortcuts import render, get_object_or_404
-from django.contrib.auth.models import User
-
 from myapp.forms import CreateProjectForm
 from myapp.models import Project, Data
 
@@ -30,6 +27,7 @@ class ProjectData(DetailView):
         context = super().get_context_data(**kwargs)
 
         data = Data.objects.get(id=self.kwargs.get('pk'))
+
         # Блок создания словаря с ежемесячными данными в шаблонизатор
         list_data = list(map(float, data.data.split(' ')))
         months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']

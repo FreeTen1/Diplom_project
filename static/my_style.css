@@ -60,3 +60,27 @@
         /*background-color: aqua;*/
     }
 }
+
+.my_dropdown {
+    margin-top: 10px;
+    width: 100%;
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    padding: 10px;
+    margin: 0 18%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: absolute;
+    /*background-color: red;*/
+    min-width: 160px;
+    overflow: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.show {display: flex;}

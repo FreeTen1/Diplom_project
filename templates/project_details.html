@@ -12,7 +12,7 @@
 
                 {% for month, number in output_data.items %}
                     <label><p class="input-label">{{ month }}:</p>
-                        <input required class="data-input" type="number" value="{{ number }}" name="{{ month }}" placeholder="Данные за {{ month }}" min="0" step="0.01"> КВт
+                        <input required class="data-input" type="number" value="{{ number }}" name="{{ month }}" placeholder="Данные за {{ month }}" min="0" step="0.01"> КВт/ч
                     </label>
                 {% endfor %}
 
@@ -35,8 +35,27 @@
 
                 <div class="div-btn-interpol">
                     <input class="btn btn-primary btn-block" type="button" id="btn1" value="График сухих данных">
-                    <input class="btn btn-primary btn-block" type="button" id="btn2" value="Среднемесячные значения">
-                    <input class="btn btn-primary btn-block" type="button" id="btn3" value="экстраполяция">
+                    <input class="btn btn-primary btn-block" type="button" id="btn2" value="Среднесуточные значения">
+                    <input class="btn btn-primary btn-block" type="button" id="btn3" value="Экстраполяция">
+
+                    <div class="my_dropdown">
+                    <input class="btn btn-primary btn-block dropbtn" type="button" id="btn4" value="Интерполяция">
+                        <div id="myDropdown" class="dropdown-content">
+                            <p>Выберите месяц интерполяции</p>
+                            <input onclick="monthInterpol(0)" class="btn btn-warning btn-block" type="button" id="jan" value="Январь">
+                            <input onclick="monthInterpol(1)" class="btn btn-warning btn-block" type="button" id="feb" value="Февраль">
+                            <input onclick="monthInterpol(2)" class="btn btn-warning btn-block" type="button" id="mar" value="Март">
+                            <input onclick="monthInterpol(3)" class="btn btn-warning btn-block" type="button" id="apr" value="Апрель">
+                            <input onclick="monthInterpol(4)" class="btn btn-warning btn-block" type="button" id="may" value="Май">
+                            <input onclick="monthInterpol(5)" class="btn btn-warning btn-block" type="button" id="jun" value="Июнь">
+                            <input onclick="monthInterpol(6)" class="btn btn-warning btn-block" type="button" id="jul" value="Июль">
+                            <input onclick="monthInterpol(7)" class="btn btn-warning btn-block" type="button" id="aug" value="Август">
+                            <input onclick="monthInterpol(8)" class="btn btn-warning btn-block" type="button" id="sep" value="Сентябрь">
+                            <input onclick="monthInterpol(9)" class="btn btn-warning btn-block" type="button" id="oct" value="Октябрь">
+                            <input onclick="monthInterpol(10)" class="btn btn-warning btn-block" type="button" id="nov" value="Ноябрь">
+                            <input onclick="monthInterpol(11)" class="btn btn-warning btn-block" type="button" id="dec" value="Декабрь">
+                        </div>
+                    </div>
                 </div>
 
             </div>
@@ -57,9 +76,72 @@
         btn1 = document.getElementById('btn1');
         btn2 = document.getElementById('btn2');
         btn3 = document.getElementById('btn3');
+        btn4 = document.getElementById('btn4');
 
-        let data = {{ list_data }};
-        let average_values = [
+        const data = {{ list_data }};
+        const dry_data = [
+            {
+            name: 'Январь',
+            y: data[0],
+            color: 'red'
+            },
+            {
+            name: 'Февраль',
+            y: data[1],
+            color: 'red'
+            },
+            {
+            name: 'Март',
+            y: data[2],
+            color: 'red'
+            },
+            {
+            name: 'Апрель',
+            y: data[3],
+            color: 'red'
+            },
+            {
+            name: 'Май',
+            y: data[4],
+            color: 'blue'
+            },
+            {
+            name: 'Июнь',
+            y: data[5],
+            color: 'blue'
+            },
+            {
+            name: 'Июль',
+            y: data[6],
+            color: 'blue'
+            },
+            {
+            name: 'Август',
+            y: data[7],
+            color: 'blue'
+            },
+            {
+            name: 'Сентябрь',
+            y: data[8],
+            color: 'blue'
+            },
+            {
+            name: 'Октябрь',
+            y: data[9],
+            color: 'blue'
+            },
+            {
+            name: 'Ноябрь',
+            y: data[10],
+            color: 'red'
+            },
+            {
+            name: 'Декабрь',
+            y: data[11],
+            color: 'red'
+            }
+        ];
+        const average_values = [
             {
             name: 'Январь',
             y: data[0] / 31,
@@ -121,63 +203,60 @@
             color: 'red'
             }
         ];
+
         btn1.addEventListener('click', () => {
             document.getElementById('graph').innerHTML = '<div style="width: 48%" id="graph1"></div><div style="width: 48%" id="graph2"></div>'
             document.getElementById('graph1').innerHTML = ''
             document.getElementById('graph2').innerHTML = ''
             Highcharts.chart('graph', {
-
+                chart: {
+                    type: 'column'
+                },
                 title: {
                     text: 'График сухих данных'
                 },
-
-                yAxis: {
-                    title: {
-                        text: 'Потребление, КВт'
-                    }
+                subtitle: {
+                    text: ''
                 },
-
                 xAxis: {
-                    name: 'Год',
-                    categories: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
-                },
-
-                legend: {
-                    layout: 'vertical',
-                    align: 'right',
-                    verticalAlign: 'middle'
-                },
-
-                plotOptions: {
-                    series: {
-                        label: {
-                            connectorAllowed: false
-                        },
-                        pointStart: 0
-                    }
-                },
-
-                series: [{
-                    name: 'Сухие данные',
-                    data: data
-                    }
-                ],
-
-                responsive: {
-                    rules: [{
-                        condition: {
-                            maxWidth: 500
-                        },
-                        chartOptions: {
-                            legend: {
-                                layout: 'horizontal',
-                                align: 'center',
-                                verticalAlign: 'bottom'
-                            }
+                    name: 'Потребление',
+                    type: 'category',
+                    labels: {
+                        rotation: -45,
+                        style: {
+                            fontSize: '13px',
+                            fontFamily: 'Verdana, sans-serif'
                         }
-                    }]
-                }
-
+                    }
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'Потребление КВт/ч'
+                    }
+                },
+                legend: {
+                    enabled: false
+                },
+                tooltip: {
+                    pointFormat: '<b>{point.y:.3f} КВт/ч</b>'
+                },
+                series: [{
+                    name: 'Месяц',
+                    data: dry_data,
+                    dataLabels: {
+                        enabled: true,
+                        rotation: -90,
+                        color: '#FFFFFF',
+                        align: 'right',
+                        format: '{point.y:.3f}', // one decimal
+                        y: 10, // 10 pixels down from the top
+                        style: {
+                            fontSize: '13px',
+                            fontFamily: 'Verdana, sans-serif'
+                        }
+                    }
+                }]
             });
         });
 
@@ -190,7 +269,7 @@
                     type: 'column'
                 },
                 title: {
-                    text: 'Среднемесячные значения'
+                    text: 'Среднесуточные значения'
                 },
                 subtitle: {
                     text: ''
@@ -208,14 +287,14 @@
                 yAxis: {
                     min: 0,
                     title: {
-                        text: 'Потребление КВт'
+                        text: 'Потребление КВт/ч'
                     }
                 },
                 legend: {
                     enabled: false
                 },
                 tooltip: {
-                    pointFormat: '<b>{point.y:.3f} КВт</b>'
+                    pointFormat: '<b>{point.y:.3f} КВт/ч</b>'
                 },
                 series: [{
                     name: 'Месяц',
@@ -283,7 +362,7 @@
 
                     yAxis: {
                         title: {
-                            text: 'Потребление, КВт'
+                            text: 'Потребление, КВт/ч'
                         }
                     },
 
@@ -340,7 +419,7 @@
 
                     yAxis: {
                         title: {
-                            text: 'Потребление, КВт'
+                            text: 'Потребление, КВт/ч'
                         }
                     },
 
@@ -389,7 +468,94 @@
                 });
 
             }
-        })
+        });
+
+        btn4.addEventListener('click', () => {
+            document.getElementById('graph').innerHTML = '<div style="width: 48%" id="graph1"></div><div style="width: 48%" id="graph2"></div>'
+            document.getElementById('graph1').innerHTML = ''
+            document.getElementById('graph2').innerHTML = ''
+            document.getElementById("myDropdown").classList.toggle("show");
+        });
+
+        function monthInterpol(d) {
+            d = average_values[d];
+            let hour = d['y'] / 24;
+            let trata = [hour * 0.001, hour * 0.0011, hour * 0.00134, hour * 0.0013, hour * 0.002, hour * 0.00278, hour * 0.0035, hour * 0.059, hour * 0.08, hour * 0.11, hour * 0.07, hour * 0.075, hour * 0.06, hour * 0.06, hour * 0.069, hour * 0.078, hour * 0.083, hour * 0.088, hour * 0.09, hour * 0.074, hour * 0.055, hour * 0.0037, hour * 0.0024, hour * 0.0019];
+
+            Highcharts.chart('graph', {
+
+                title: {
+                text: `Примерное потребление энергии в течении дня за ${d['name']}`
+                },
+
+                yAxis: {
+                    type: 'Потребление',
+
+                    title:{
+                    text: 'КВт/ч',
+                    },
+                },
+
+                xAxis: {
+                    title:{
+                        text:'Часы'
+                    },
+                accessibility: {
+                  rangeDescription: 'Range: 2010 to 2017'
+                }
+                },
+
+                legend: {
+                    layout: 'vertical',
+                    align: 'right',
+                    verticalAlign: 'middle'
+                },
+
+                plotOptions: {
+                series: {
+                  label: {
+                    connectorAllowed: false
+                  },
+                  pointStart: 0
+                }
+                },
+
+                series: [{
+                    name: ``,
+                    data: trata
+                }],
+
+                responsive: {
+                rules: [{
+                  condition: {
+                    maxWidth: 500
+                  },
+                  chartOptions: {
+                    legend: {
+                      layout: 'horizontal',
+                      align: 'center',
+                      verticalAlign: 'bottom'
+                    }
+                  }
+                }]
+                }
+
+                });
+        }
+
+        // Close the dropdown if the user clicks outside of it
+        window.onclick = function(event) {
+            if (!event.target.matches('.dropbtn')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                var i;
+                for (i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
     </script>
 
 {% endblock content%}
