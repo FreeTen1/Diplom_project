@@ -33,10 +33,10 @@ class ProjectData(DetailView):
         months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь']
         context['output_data'] = {}
         for number, month in zip(list_data, months):
-            context['output_data'][month] = number
+            context['output_data'][month] = str(number)
         # Конец блока
 
-        context['coef'] = data.coef
+        context['coef'] = str(data.coef)
         context['a_project'] = Data.objects.filter(project__user__username=self.request.user)
         context['list_data'] = list_data  # сухие данные
         return context
