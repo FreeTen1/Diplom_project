@@ -386,10 +386,12 @@
                         }
                     },
 
-                    series: [{
+                    series: [
+                        {
                         name: 'Ежегодное потребление',
                         data: list_every_yaer
-                    }],
+                        }
+                    ],
 
                     responsive: {
                         rules: [{
@@ -405,6 +407,7 @@
                             }
                         }]
                     }
+
                 });
 
                 // график среднемесячного потребления за год
@@ -440,10 +443,12 @@
                         }
                     },
 
-                    series: [{
+                    series: [
+                        {
                         name: 'среднемесяное потребление',
                         data: list_average_every_yaer
-                    }],
+                        }
+                    ],
 
                     responsive: {
                         rules: [{
@@ -495,9 +500,9 @@
                     title:{
                         text:'Часы'
                     },
-                    accessibility: {
-                        rangeDescription: 'Range: 2010 to 2017'
-                    }
+                accessibility: {
+                  rangeDescription: 'Range: 2010 to 2017'
+                }
                 },
 
                 legend: {
@@ -507,35 +512,38 @@
                 },
 
                 plotOptions: {
-                    series: {
-                        label: {
-                            connectorAllowed: false
-                        },
-                    }
+                series: {
+                  label: {
+                    connectorAllowed: false
+                  },
+                  pointStart: 0
+                }
                 },
                 tooltip: {
                     pointFormat: '<b>{point.y:.1f} Вт/ч</b>'
                 },
                 series: [{
-                    name: `${d['name']}`,
+                    name: ``,
                     data: trata
                 }],
 
                 responsive: {
-                    rules: [{
-                        condition: {
-                            maxWidth: 500
-                        },
-                        chartOptions: {
-                            legend: {
-                                layout: 'horizontal',
-                                align: 'center',
-                                verticalAlign: 'bottom'
-                            }
-                        }
-                    }]
+                rules: [{
+                  condition: {
+                    maxWidth: 500
+                  },
+
+                  chartOptions: {
+                    legend: {
+                      layout: 'horizontal',
+                      align: 'center',
+                      verticalAlign: 'bottom'
+                    }
+                  }
+                }]
                 }
-            });
+
+                });
         }
 
         // Close the dropdown if the user clicks outside of it
