@@ -1,3 +1,12 @@
+# Выпускная работа бакалавра
+# студентки группы А-12-17
+# Торчкова Михаила Васильевича
+
+# Листинг модуля "views.py" приложения "myapp", класса "ProjectData"
+
+# ==========
+
+# Импортируемые модули
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic import ListView, DetailView, CreateView, DeleteView
@@ -5,6 +14,7 @@ from django.views.generic import ListView, DetailView, CreateView, DeleteView
 from myapp.forms import CreateProjectForm
 from myapp.models import Project, Data
 
+from django.contrib import messages
 
 class IndexView(ListView):
     model = Data
@@ -72,12 +82,15 @@ class ProjectCreate(CreateView):
 
     def post(self, request, *args, **kwargs):
         project_name = request.POST['project_name']
+        current_user = self.request.user
+        if not Project.objects.filter(user=current_user, project_name=project_name).exists():
+            project = Project(user=current_user, project_name=project_name)
+            project.save()
+            data_project = Data(project=project)
+            data_project.save()
+        else:
+            messages.error(request, 'Такое имя проекта уже занято, попробуйте другое.')
 
-        project = Project(user=self.request.user, project_name=project_name)
-        project.save()
-
-        data_project = Data(project=project)
-        data_project.save()
         return super().get(request, *args, **kwargs)
 
 

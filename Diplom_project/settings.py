@@ -144,4 +144,3 @@ STATICFILES_DIRS = [
 LOGIN_URL = 'accounts/login/'
 LOGIN_REDIRECT_URL = '/'
 EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
-
