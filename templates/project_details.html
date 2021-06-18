@@ -320,7 +320,7 @@
             document.getElementById('graph1').innerHTML = ''
             document.getElementById('graph2').innerHTML = ''
             let n = prompt('На сколько лет вперёд вы хотите экстраполировать данные?')
-            if (!n.match(/^[1-9]{1}\d+$/)) {
+            if (!n.match(/^[1-9]{1}\d*$/)) {
                 alert(`Данные введены некоректно нельзя ввести "${n}", пожалуйста введите целое неотрицательное число`)
             }
             else {
